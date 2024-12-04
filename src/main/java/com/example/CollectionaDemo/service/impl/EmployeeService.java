@@ -4,6 +4,7 @@ import com.example.CollectionaDemo.model.Employee;
 
 import java.awt.*;
 import java.util.Collection;
+import java.util.Map;
 
 public interface EmployeeService {
     Employee add(String firstName, String lastName);
@@ -11,5 +12,5 @@ public interface EmployeeService {
     Employee remove(String firstName, String lastName);
     Employee find(String firstName, String lastName);
 
-    Collection<Employee> getAll();
+    Map<String,Employee> getAll();
 }

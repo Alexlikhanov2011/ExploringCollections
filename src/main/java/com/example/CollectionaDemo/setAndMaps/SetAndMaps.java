@@ -4,9 +4,11 @@ import java.util.*;
 
 public class SetAndMaps {
     public static void main(String[] args) {
-        List<Integer> list = new ArrayList<>(List.of(1,1,2,3,4,4,5,5,6,7));
-task2(list);
-task4(new ArrayList<>(List.of("один","два","два", "три","три","три")));
+        List<Integer> list = new ArrayList<>(List.of(1,1,8,3,6,4,5,5,6,7));
+        List<String> listString = new ArrayList<>(List.of("один","два","два", "три","три","три"));
+        task2(list);
+        int index = listString.indexOf("пять");
+        System.out.println(index);
     }
 /*Выводит только не четные числа*/
     public static void task1(List<Integer> list) {
@@ -19,7 +21,7 @@ task4(new ArrayList<>(List.of("один","два","два", "три","три","�
     }
     /*Выводит только четные числа без повторений в порядке возростания*/
     public static void task2(List<Integer> list) {
-        Collections.sort(list);
+       list.sort(Comparator.reverseOrder());
         Set<Integer> set = new HashSet<>();
         for (Integer integer : list) {
             if (integer % 2 == 0 && !set.contains(integer)) {

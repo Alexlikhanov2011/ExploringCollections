@@ -6,52 +6,54 @@ import com.example.CollectionaDemo.exceptions.EmployeeStorageFullException;
 import com.example.CollectionaDemo.model.Employee;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private static final int SIZE = 10;
-    private final List<Employee> employees = new ArrayList<>();
+    private final Map<String, Employee> employees = new HashMap<>();
 @Override
     public Employee add(String firstName, String lastName) {
 
         if (employees.size() == SIZE) {
             throw new EmployeeStorageFullException("Не можем создать хранилище уже переполнено");
         }
-        var employee = new Employee(firstName, lastName);
-        if (employees.contains(employee)) {
+        if (employees.containsKey(getKey(firstName,lastName))) {
             throw new EmployeeAllreadeAddedException("Сотрудник с именем " + firstName + " и фаилией"+
                     lastName+" уже есть такой");
         }
-        employees.add(employee);
+    Employee employee = new Employee(firstName, lastName);
+        employees.put(getKey(employee),employee);
 return employee;
     }
     @Override
     public Employee find(String firstName, String lastName) {
-        var employee = new Employee(firstName, lastName);
-        for (Employee empl : employees) {
-            if (empl.equals(employee)) {
-                return empl;
-            }
-        }
 
-        throw new EmployeeNotFoundException("Сотрудник с именем " +
-                firstName + " и фамилией " + lastName + " не существует");
-    }
-    @Override
-    public Employee remove(String firstName, String lastName) {
-        var employee = new Employee(firstName,lastName);
-        if (!employees.contains(employee)) {
+        Employee employee = employees.get(getKey(firstName,lastName));
+        if (employee == null) {
             throw new EmployeeNotFoundException("Сотрудник с именем " +
                     firstName + " и фамилией " + lastName + " не существует");
         }
-        employees.remove(employee);
         return employee;
     }
+    @Override
+    public Employee remove(String firstName, String lastName) {
+        if (!employees.containsKey(getKey(firstName,lastName))) {
+            throw new EmployeeNotFoundException("Сотрудник с именем " +
+                    firstName + " и фамилией " + lastName + " не существует");
+        }
+        return employees.remove(getKey(firstName,lastName));
 
-    public Collection<Employee> getAll() {
-        return Collections.unmodifiableList(employees);
+    }
+
+    public Map<String,Employee> getAll() {
+        return Collections.unmodifiableMap(employees);
+    }
+
+    private static String getKey(String firstName, String lastName) {
+        return firstName + lastName;
+    }
+    private static String getKey(Employee employee) {
+        return employee.getFirstName() + employee.getLastName();
     }
 }
