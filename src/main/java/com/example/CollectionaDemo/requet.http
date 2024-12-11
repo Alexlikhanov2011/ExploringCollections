@@ -9,3 +9,7 @@ GET http://localhost:8080/employee/remove?firstName=sasha&lastName=likhanov2
 
 ###
 GET http://localhost:8080/employee
+###
+GET http://localhost:8080/department/max-salary?departmentId=30
+###
+GET http://localhost:8080/department/all
